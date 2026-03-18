@@ -109,6 +109,46 @@ const fixSuggestions: Record<string, string[]> = {
     "装飾（グラデーション・シャドウ・カラーバー）を最小限にする",
     "melta UIの禁止パターンに従い、`shadow-lg`や`border-l-4`カラーバーを避ける",
   ],
+  w01: [
+    "テキストと背景のコントラスト比を4.5:1以上にする（Chrome DevToolsで確認可能）",
+    "色だけでなくアイコンやテキストでも状態を伝える（例: エラーは赤色＋「!」アイコン＋テキスト）",
+    "薄いグレー（`#999`以上明るい色）を白背景で使わない",
+  ],
+  w02: [
+    "`<img>`に意味を伝える`alt`属性を追加する（例: `alt=\"売上推移グラフ\"`）",
+    "装飾的な画像は`alt=\"\"`で読み飛ばす（空文字のaltは必要）",
+    "アイコンボタンに`aria-label`を追加する（例: `<button aria-label=\"検索\"><i class=\"icon-search\"></i></button>`）",
+  ],
+  w03: [
+    "`<div onclick>`を`<button>`に置き換える（キーボード操作・スクリーンリーダー対応が自動で得られる）",
+    "`tabindex`の正の値を使わず、DOM順序でフォーカス順を制御する",
+    "カスタムUIには`onkeydown`でEnter/Spaceキーのハンドラを追加する",
+  ],
+  w04: [
+    "`outline: none`を使う場合は`box-shadow`や`border`で代替フォーカススタイルを用意する",
+    "例: `:focus-visible { box-shadow: 0 0 0 2px var(--primary-500); outline: none; }`",
+    "`:focus`ではなく`:focus-visible`を使うと、マウスクリック時はリングが出ずキーボード操作時のみ表示される",
+  ],
+  w05: [
+    "`<input>`に`<label for=\"fieldId\">`を関連付ける",
+    "`placeholder`はラベルの代わりにならない（入力開始で消えるため）",
+    "例: `<label for=\"email\">メールアドレス</label><input id=\"email\" type=\"email\">`",
+  ],
+  w06: [
+    "エラーフィールドに`aria-invalid=\"true\"`を設定する",
+    "エラーメッセージを`aria-describedby`でフィールドに紐付ける",
+    "例: `<input aria-invalid=\"true\" aria-describedby=\"email-error\"><span id=\"email-error\">メールアドレスの形式が正しくありません</span>`",
+  ],
+  w07: [
+    "見出しレベルを飛ばさない（h1→h2→h3の順で使う）",
+    "ページにh1は1つだけにする",
+    "見た目のサイズ調整はCSSで行い、意味的な見出しレベルを正しく保つ",
+  ],
+  w08: [
+    "ナビゲーションは`<nav>`、メインコンテンツは`<main>`で囲む",
+    "リストは`<ul>`/`<ol>`で、データテーブルは`<table>`でマークアップする",
+    "`<div class=\"button\">`ではなく`<button>`を使う（WAI-ARIAよりネイティブHTMLを優先）",
+  ],
 };
 
 export async function suggestFix(args: {

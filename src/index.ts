@@ -26,14 +26,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "get_principle",
         description:
-          "UX原則の詳細を取得する。nielsen（ニールセンの10原則）またはgestalt（ゲシュタルト原則）を指定できる。",
+          "UX原則の詳細を取得する。nielsen（ニールセンの10原則）、gestalt（ゲシュタルト原則）、wcag（アクセシビリティ）を指定できる。",
         inputSchema: {
           type: "object",
           properties: {
             principle: {
               type: "string",
-              enum: ["nielsen", "gestalt", "all"],
-              description: "取得する原則: nielsen / gestalt / all",
+              enum: ["nielsen", "gestalt", "wcag", "all"],
+              description: "取得する原則: nielsen / gestalt / wcag / all",
             },
           },
           required: ["principle"],
@@ -58,7 +58,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
             focus: {
               type: "string",
-              enum: ["nielsen", "gestalt", "all"],
+              enum: ["nielsen", "gestalt", "wcag", "all"],
               description: "重点的にチェックする原則（省略時はall）",
             },
           },

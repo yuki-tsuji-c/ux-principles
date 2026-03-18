@@ -15,11 +15,15 @@ export async function getPrinciple(args: { principle: string }) {
       path.join(PRINCIPLES_DIR, "gestalt.md"),
       "utf-8"
     );
+    const wcag = fs.readFileSync(
+      path.join(PRINCIPLES_DIR, "wcag.md"),
+      "utf-8"
+    );
     return {
       content: [
         {
           type: "text",
-          text: `# UX原則 全件\n\n${nielsen}\n\n---\n\n${gestalt}`,
+          text: `# UX原則 全件\n\n${nielsen}\n\n---\n\n${gestalt}\n\n---\n\n${wcag}`,
         },
       ],
     };
@@ -28,12 +32,13 @@ export async function getPrinciple(args: { principle: string }) {
   const fileMap: Record<string, string> = {
     nielsen: "nielsen-10.md",
     gestalt: "gestalt.md",
+    wcag: "wcag.md",
   };
 
   const fileName = fileMap[principle];
   if (!fileName) {
     throw new Error(
-      `Unknown principle: ${principle}. Use 'nielsen', 'gestalt', or 'all'.`
+      `Unknown principle: ${principle}. Use 'nielsen', 'gestalt', 'wcag', or 'all'.`
     );
   }
 

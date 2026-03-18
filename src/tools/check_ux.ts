@@ -147,6 +147,79 @@ function detectViolations(
         );
       }
     }
+    // WCAGチェック
+    if (rule.id === "w02") {
+      const imgWithoutAlt = lower.match(/<img(?![^>]*alt\s*=)[^>]*>/g);
+      if (imgWithoutAlt) {
+        detected.push(`alt属性のないimg要素が${imgWithoutAlt.length}件あります`);
+      }
+      const iconWithoutLabel = lower.match(/<i\s+class\s*=\s*["'][^"']*icon[^"']*["'][^>]*>[\s]*<\/i>/g);
+      if (iconWithoutLabel && !lower.includes("aria-label")) {
+        detected.push("aria-labelのないアイコン要素があります");
+      }
+    }
+    if (rule.id === "w03") {
+      const divOnclick = lower.match(/<div[^>]*onclick/g);
+      const spanOnclick = lower.match(/<span[^>]*onclick/g);
+      if (divOnclick || spanOnclick) {
+        const count = (divOnclick?.length || 0) + (spanOnclick?.length || 0);
+        detected.push(`div/spanにonclickを使用している箇所が${count}件あります。<button>を使ってください`);
+      }
+      const posTabindex = lower.match(/tabindex\s*=\s*["'][1-9]/g);
+      if (posTabindex) {
+        detected.push("正の値のtabindexがあります。フォーカス順序が混乱する可能性があります");
+      }
+    }
+    if (rule.id === "w04") {
+      if (lower.includes("outline: none") || lower.includes("outline:none") || lower.includes("outline: 0")) {
+        detected.push("outline: noneでフォーカスリングが削除されています。代替スタイルがあるか確認してください");
+      }
+    }
+    if (rule.id === "w05") {
+      const inputs = lower.match(/<input[^>]*>/g) || [];
+      for (const input of inputs) {
+        if (input.includes('type="hidden"') || input.includes("type='hidden'")) continue;
+        if (input.includes('type="submit"') || input.includes("type='submit'")) continue;
+        // inputのidを取得してlabel forとの対応を簡易チェック
+        const idMatch = input.match(/id\s*=\s*["']([^"']+)["']/);
+        if (idMatch) {
+          const labelFor = `for="${idMatch[1]}"`;
+          if (!lower.includes(labelFor) && !lower.includes(`for='${idMatch[1]}'`)) {
+            if (!input.includes("aria-label")) {
+              detected.push(`input(id="${idMatch[1]}")にlabel要素が関連付けられていない可能性があります`);
+            }
+          }
+        } else if (!input.includes("aria-label")) {
+          detected.push("idのないinput要素があり、labelとの関連付けが確認できません");
+        }
+      }
+    }
+    if (rule.id === "w07") {
+      const headings = lower.match(/<h([1-6])/g);
+      if (headings) {
+        const levels = headings.map((h) => parseInt(h.charAt(2)));
+        for (let i = 1; i < levels.length; i++) {
+          if (levels[i] > levels[i - 1] + 1) {
+            detected.push(`見出しレベルが飛んでいます（h${levels[i - 1]}→h${levels[i]}）`);
+            break;
+          }
+        }
+        const h1Count = levels.filter((l) => l === 1).length;
+        if (h1Count > 1) {
+          detected.push(`h1が${h1Count}個あります。ページにh1は1つにしてください`);
+        }
+      }
+    }
+    if (rule.id === "w08") {
+      if (lower.includes("class=\"nav") || lower.includes("class='nav")) {
+        if (!lower.includes("<nav")) {
+          detected.push("ナビゲーションに<nav>ランドマークが使われていません");
+        }
+      }
+      if (!lower.includes("<main")) {
+        detected.push("<main>ランドマークが使われていません");
+      }
+    }
   }
 
   if (targetType === "description") {
