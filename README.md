@@ -6,7 +6,6 @@
 
 UX Principles は、AI エージェントが生成した UI を UX 観点で自動チェックするための MCP サーバーです。ニールセンの 10 原則とゲシュタルト原則をベースに、HTML・コンポーネント・ユーザーフロー・画面説明文を評価し、改善提案まで行います。
 
-[melta UI](https://github.com/tsubotax/melta-ui) が **UI（見た目の一貫性）** を担保するのに対し、このリポジトリは **UX（使いやすさ）** を担保します。両方を通過した UI が「見た目も使い勝手も良い」状態です。
 
 ## Core Architecture
 
@@ -107,7 +106,3 @@ ux-principles/
 └── src/                       ← MCP サーバー（TypeScript）
     └── index.ts
 ```
-
-## License
-
-MIT
